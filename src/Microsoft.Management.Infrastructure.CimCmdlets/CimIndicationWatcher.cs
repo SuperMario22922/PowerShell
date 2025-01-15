@@ -153,7 +153,7 @@ namespace Microsoft.Management.Infrastructure.CimCmdlets
             string theNamespace,
             string queryDialect,
             string queryExpression,
-            UInt32 operationTimeout)
+            uint operationTimeout)
         {
             ValidationHelper.ValidateNoNullorWhiteSpaceArgument(queryExpression, queryExpressionParameterName);
             computerName = ConstValue.GetComputerName(computerName);
@@ -173,7 +173,7 @@ namespace Microsoft.Management.Infrastructure.CimCmdlets
             string theNamespace,
             string queryDialect,
             string queryExpression,
-            UInt32 operationTimeout)
+            uint operationTimeout)
         {
             ValidationHelper.ValidateNoNullorWhiteSpaceArgument(queryExpression, queryExpressionParameterName);
             ValidationHelper.ValidateNoNullArgument(cimSession, cimSessionParameterName);
@@ -192,7 +192,7 @@ namespace Microsoft.Management.Infrastructure.CimCmdlets
             string theNameSpace,
             string theQueryDialect,
             string theQueryExpression,
-            UInt32 theOperationTimeout)
+            uint theOperationTimeout)
         {
             enableRaisingEvents = false;
             status = Status.Default;
@@ -221,14 +221,11 @@ namespace Microsoft.Management.Infrastructure.CimCmdlets
             if (temp != null)
             {
                 // raise the event
-                CimSubscriptionResultEventArgs resultArgs = args as CimSubscriptionResultEventArgs;
-                if (resultArgs != null)
+                if (args is CimSubscriptionResultEventArgs resultArgs)
                     temp(this, new CimIndicationEventInstanceEventArgs(resultArgs.Result));
-                else
+                else if (args is CimSubscriptionExceptionEventArgs exceptionArgs)
                 {
-                    CimSubscriptionExceptionEventArgs exceptionArgs = args as CimSubscriptionExceptionEventArgs;
-                    if (exceptionArgs != null)
-                        temp(this, new CimIndicationEventExceptionEventArgs(exceptionArgs.Exception));
+                    temp(this, new CimIndicationEventExceptionEventArgs(exceptionArgs.Exception));
                 }
             }
         }
@@ -378,7 +375,7 @@ namespace Microsoft.Management.Infrastructure.CimCmdlets
         private string nameSpace;
         private string queryDialect;
         private string queryExpression;
-        private UInt32 operationTimeout;
+        private uint operationTimeout;
         #endregion
         #endregion
     }
